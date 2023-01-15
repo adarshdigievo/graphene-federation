@@ -11,13 +11,7 @@ def get_inaccessible_types(schema: Schema) -> dict[str, Any]:
     They can be easily distinguished from the other type as
     the `@inaccessible` decorator adds a `_inaccessible` attribute to them.
     """
-    inaccessible_types = {}
-    for type_name, type_ in schema.graphql_schema.type_map.items():
-        if not hasattr(type_, "graphene_type"):
-            continue
-        if getattr(type_.graphene_type, "_inaccessible", False):
-            inaccessible_types[type_name] = type_.graphene_type
-    return inaccessible_types
+    return get_attributed_fields(attribute='_inaccessible', schema=schema)
 
 
 def inaccessible(field: Optional[Any] = None) -> Any:
